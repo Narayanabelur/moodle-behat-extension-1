@@ -171,12 +171,18 @@ final class SkipPassedController implements Controller {
      * @return string
      */
     private function generateKey(InputInterface $input) {
-        return md5(
+        /*return md5(
             $input->getParameterOption(array('--profile', '-p')) .
             $input->getOption('suite') .
             implode(' ', $input->getOption('name')) .
             implode(' ', $input->getOption('tags')) .
             $input->getOption('role') .
+            $input->getArgument('paths') .
+            $this->basepath
+        );*/
+        return md5(
+            $input->getParameterOption(array('--profile', '-p')) .
+            $input->getOption('suite') .
             $input->getArgument('paths') .
             $this->basepath
         );

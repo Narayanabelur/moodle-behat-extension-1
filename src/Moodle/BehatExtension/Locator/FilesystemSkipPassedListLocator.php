@@ -28,6 +28,7 @@ use Behat\Gherkin\Gherkin;
 use Behat\Testwork\Specification\Locator\SpecificationLocator;
 use Behat\Testwork\Specification\NoSpecificationsIterator;
 use Behat\Testwork\Suite\Suite;
+use Behat\Testwork\Specification\SpecificationPercolator;
 
 /**
  * Skips gherkin features using a file with the list of scenarios.
@@ -41,12 +42,18 @@ final class FilesystemSkipPassedListLocator implements SpecificationLocator {
     private $gherkin;
 
     /**
+     * @var SpecificationPercolator
+     */
+    private $percolator;
+
+    /**
      * Initializes locator.
      *
      * @param Gherkin $gherkin
      */
-    public function __construct(Gherkin $gherkin) {
+    public function __construct(Gherkin $gherkin,  SpecificationPercolator $percolator) {
         $this->gherkin = $gherkin;
+        $this->percolator = $percolator;
     }
 
     /**
@@ -73,7 +80,7 @@ final class FilesystemSkipPassedListLocator implements SpecificationLocator {
 
         $scenarios = array_diff($suitepaths, array_values($scenarios[$suite->getName()]));
 
-        return new LazyFeatureIterator($suite, $this->gherkin, $scenarios);
+        return new LazyFeatureIterator($suite, $this->gherkin, $this->percolator, $scenarios);
     }
 
     /**

@@ -22,6 +22,7 @@ use Behat\Behat\Definition\Printer\ConsoleDefinitionListPrinter;
 use Behat\Behat\Gherkin\ServiceContainer\GherkinExtension;
 use Behat\Testwork\Output\ServiceContainer\OutputExtension;
 use Behat\Testwork\Specification\ServiceContainer\SpecificationExtension;
+use Behat\Testwork\Specification\SpecificationPercolator;
 
 /**
  * Behat extension for moodle
@@ -35,6 +36,8 @@ class BehatExtension implements ExtensionInterface {
     const MOODLE_ID = 'moodle';
 
     const GHERKIN_ID = 'gherkin';
+
+    const PERCOLATOR_ID = 'specifications.percolator';
 
     /**
      * @var ServiceProcessor
@@ -172,7 +175,8 @@ class BehatExtension implements ExtensionInterface {
      */
     private function loadFilesystemSkipPassedScenariosListLocator(ContainerBuilder $container) {
         $definition = new Definition('Moodle\BehatExtension\Locator\FilesystemSkipPassedListLocator', array(
-            new Reference(self::GHERKIN_ID)
+            new Reference(self::GHERKIN_ID),
+            new Reference(self::PERCOLATOR_ID)
         ));
         $definition->addTag(SpecificationExtension::LOCATOR_TAG, array('priority' => 50));
         $container->setDefinition(SpecificationExtension::LOCATOR_TAG . '.filesystem_skip_passed_scenarios_list', $definition);
